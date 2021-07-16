@@ -1,7 +1,7 @@
 import numpy as np
 from scipy.integrate import solve_ivp, quad
 
-class Streamlines():
+class Streamline():
 
     def __init__(self, x0, t_bounds, tols, interpolator, normalized=False, max_step=1e-3):
         self.x0 = x0
