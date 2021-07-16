@@ -46,7 +46,6 @@ class Streamlines():
             C = quad(circulation, self.t_bounds[0], self.t_bounds[1], limit=500)
             L = self.t_bounds[1] - self.t_bounds[0]  # Arc length of streamline: exactly known
 
-            print(C)
             self.T = L / C[0]
 
         else:  # unnormalized case: t has units of time.
