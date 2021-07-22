@@ -3,9 +3,9 @@ from scipy.integrate import solve_ivp, quad
 
 class Streamline():
 
-    def __init__(self, x0, t_bounds, tols, interpolator, normalized=False, max_step=1e-3):
+    def __init__(self, x0, T, tols, interpolator, normalized=False, max_step=1e-3):
         self.x0 = x0
-        self.t_bounds = t_bounds
+        self.t_bound = T
         self.rtol = tols[0]
         self.atol = tols[1]
         self.max_step = max_step
@@ -16,20 +16,25 @@ class Streamline():
         return self.interpolator(x)
 
     def wrap_interp_normalized(self, t, x):
-        ωi = self.interpolator(x)
+        ωi = self.interpolator(x[0:3])[0]
+        #ωi = self.interpolator(x)
         ω_mag = np.linalg.norm(ωi)
-        return ωi / ω_mag
+        #return ωi / ω_mag
+        return np.append(ωi / ω_mag, ω_mag)
 
     def integrate(self):
         # Define integrator function: if normalized
         if self.normalized:
             self.RHS = self.wrap_interp_normalized
+            x0s = np.hstack((self.x0, 0.)) # integrate circulation simulteneaously
+            #x0s = self.x0
         else:
             self.RHS = self.wrap_interp
-        # Integrate streamline
+            x0s = self.x0
+            # Integrate streamline
         sol = solve_ivp(self.RHS,
-                        self.t_bounds,
-                        self.x0,
+                        (0, self.t_bound),
+                        x0s,
                         rtol=self.rtol,
                         atol=self.atol,
                         dense_output=True,
@@ -40,14 +45,15 @@ class Streamline():
         if self.normalized:
             # integrate circulation  C = \int_0^t_max np.dot(omega(r(t)), dr(t)), with dr = RHS dt
             # Note that in the normalized case, t has units of length.
+            # = norm of interpolator
 
-            def circulation(t):
-                return np.dot(self.interpolator(sol.sol(t)), self.RHS(1., sol.sol(t)).T)
-            C = quad(circulation, self.t_bounds[0], self.t_bounds[1], limit=500)
-            L = self.t_bounds[1] - self.t_bounds[0]  # Arc length of streamline: exactly known
-
-            self.T = L / C[0]
+            C = sol.y[-1,:] # total circulation
+            L = self.t_bound  # Arc length of streamline: exactly known
+            self.C = C
+            self.y = sol.y[0:3,:].T
+            self.T = L / C[-1]
 
         else:  # unnormalized case: t has units of time.
-            self.T = self.t_bounds[1] - self.t_bounds[0]
+            self.T = self.t_bound
+            self.y = sol.y.T
         self.sol = sol
