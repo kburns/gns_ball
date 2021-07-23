@@ -21,10 +21,12 @@ def compute_partial_link_DS(s1, s2, idx, dL=1):
     
     idx: tuple of ints
         contains the indices of the streamlines for saving to disk intermediate results
+        
+    dL: float or int
     """
     # partition s1 and s2 every dL
     L_values = np.arange(0,s1.L + dL,dL)
-    nL = int(s1.L / dL)
+    nL = len(L_values)
     def split_s(s):
         coord = s.s
         split_coords = np.split(coord, L_values[:-1])
@@ -35,7 +37,7 @@ def compute_partial_link_DS(s1, s2, idx, dL=1):
         split_x = [s.x[idx[i]:idx[i + 1]] for i in range(len(idx) - 1)] 
         # get the normalization factor for the line going from 0 to L_values[k]
         split_Tf = np.array([s.T[idx[i]:idx[i + 1]][-1] for i in range(len(idx) - 1)])
-        return split_x, split_T
+        return split_x, split_Tf
     
     ls, ls_Tf = split_s(s1)
     ks, ks_Tf = split_s(s2)
@@ -54,7 +56,7 @@ def compute_partial_link_DS(s1, s2, idx, dL=1):
     # compute linking number between 
     lnkNum = 0.
     norm_factor = 0.
-    for a in range(nL):
+    for a in range(nL-1):
         running_L = L_values[a]
         for n in range(a**2, (a+1)**2): # this loop could be parallelized
             i,j = _pairing(n)
@@ -64,8 +66,8 @@ def compute_partial_link_DS(s1, s2, idx, dL=1):
         filename = "partial_lnks/compute_links_L{0}_i{1}j{2}.pickle".format(running_L,
                                                                             idx[0],
                                                                             idx[1])
-        with open(filename, "rb") as file:
-            pickle.dump((running_L, lnkNum, normfactor), file)
+        with open(filename, "wb") as file:
+            pickle.dump((running_L, lnkNum, norm_factor), file)
     return lnkNum
 
 
@@ -99,6 +101,6 @@ def _pairing(n):
     fsqrtn = int(np.floor(np.sqrt(n)))
     a = n - fsqrtn * fsqrtn
     if a <= fsqrtn:
-        return a, fsqtrn
+        return a, fsqrtn
     else:
         return fsqrtn, 2*fsqrtn - a
