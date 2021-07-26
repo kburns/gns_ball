@@ -13,7 +13,7 @@ def compute_link_DS(s1, s2):
     return _compute_link_DS(x1, x2)
 
 
-def compute_partial_link_DS(s1, s2, idx, dL=1):
+def compute_partial_link_DS(s1, s2, idx, filename, dL=1):
     """Compute partial linking numbers between two Streamline objects. 
     Both Streamline objects should have the same lenght L attribute.
     
@@ -61,12 +61,12 @@ def compute_partial_link_DS(s1, s2, idx, dL=1):
         for n in range(a**2, (a+1)**2): # this loop could be parallelized
             i,j = _pairing(n)
             lnkNum += _compute_link_DS(ls[i], ks[j])
-        norm_factor += ls_Tf[a] * ls_Tf[a]
+        norm_factor = ls_Tf[a] * ls_Tf[a]
         # save to disk (running_L, lnkNum, normfactor)
-        filename = "partial_lnks/compute_links_L{0}_i{1}j{2}.pickle".format(running_L,
+        filename_extended = filename + "_L{0}_i{1}j{2}.pickle".format(running_L,
                                                                             idx[0],
                                                                             idx[1])
-        with open(filename, "wb") as file:
+        with open(filename_extended, "wb") as file:
             pickle.dump((running_L, lnkNum, norm_factor), file)
     return lnkNum
 
