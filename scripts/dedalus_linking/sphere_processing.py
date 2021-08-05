@@ -3,7 +3,7 @@
 
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator
-from dedalus.core import coords, distributor, basis, field, operators, problems, solvers, timesteppers, arithmetic
+from dedalus.core import coords, distributor, basis, field
 from dedalus.tools.cache import CachedFunction
 from dedalus.core.basis import BallBasis
 from dedalus.extras.flow_tools import GlobalArrayReducer
