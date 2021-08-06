@@ -86,6 +86,17 @@ def export_closed_BCC(filename, arr_list):
     print("{0} curves with {1} total points succesfully exported to bcc".format(Nc, TC))
     
 def read_BCC(filename):
+    """
+    Loads .bcc (Binary Curve Collection) file into a list of numpy array of sizes (N x 3).
+    Returns the list of arrays and a numpy integer array 'is_closed' whose entries are 1 if corresponding curve is closed.
+    
+    input:
+    
+    filename: str
+        location of file to import. if the '.bcc' extension is not present it is automatically added.
+     
+    
+    """
     if filename[-4:] != '.bcc':
         filename += '.bcc'
     with open(filename, "rb") as file:
@@ -114,6 +125,20 @@ def read_BCC(filename):
         return list_curves, is_closed
     
 def readtxt_certificate(filename, sparse=False):
+    """
+    Loads .txt file output from the Fast Linking Number verifycurves executable and returns the matrix of linking numbers.
+    being symmetrical, the matrix is only filled for entries j<i.
+    sparse=True defines a scipy.sparse dictionary-of-keys sparse matrix.
+    
+    filename: str
+        location of file to import. if the '.bcc' extension is not present it is automatically added.
+     
+    sparse: bool, defaults to False
+        If true, linking numbers are returned as lower triangular sparse  scipy "dok" matrix, if false as lower-triangular
+        numpy array.
+    
+    """
+    
     if filename[-4:] != '.txt':
         filename += '.txt'
     with open(filename, 'r') as file:
