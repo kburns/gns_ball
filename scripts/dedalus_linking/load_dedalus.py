@@ -1,7 +1,7 @@
 
 
 import numpy as np
-import sphere_processing as sphere
+import dedalus_linking.sphere_processing as sphere
 from dedalus.core import field, operators, arithmetic
 
 
