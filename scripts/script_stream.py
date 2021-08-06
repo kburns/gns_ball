@@ -1,6 +1,6 @@
 import numpy as np
-from src.streamline import Streamline
-from src.lnknum import compute_link_DS
+from dedalus_linking.streamline import Streamline
+from dedalus_linking.lnknums import compute_link_DS
 from dedalus_linking.load_dedalus import build_cartesian_vorticity_interpolator
 import pickle
 
