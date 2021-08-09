@@ -61,15 +61,15 @@ def compute_partial_link_DS(s1, s2, idx, filename, dL=1):
         for n in range(a**2, (a+1)**2): # this loop could be parallelized
             i,j = _pairing(n)
             lnkNum += _compute_link_DS(ls[i], ks[j])
-        norm_factor = ls_Tf[a] * ks_Tf[a]
+        norm_factor = ls_Tf[a+1] * ks_Tf[a+1]
         # save to disk (running_L, lnkNum, normfactor)
         #filename_extended = filename + "_L{0}_i{1}j{2}.pickle".format(running_L,
         #                                                                   idx[0],
         #                                                                   idx[1])
         with open(filename, "rb") as file:
             lnks, nfs, Ls = pickle.load(file)
-        lnks[idx[0],idx[1],a] = lnkNum
-        nfs[idx[0],idx[1],a] = norm_factor
+        lnks[idx[0],idx[1],a+1] = lnkNum
+        nfs[idx[0],idx[1],a+1] = norm_factor
         with open(filename, "wb") as file:
             pickle.dump((lnks, nfs, Ls), file)
         #with open(filename, "wb") as file:
