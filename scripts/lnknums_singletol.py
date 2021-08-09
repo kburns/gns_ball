@@ -1,6 +1,6 @@
 import numpy as np
 import pickle
-from src.lnknum import compute_partial_link_DS
+from dedalus_linking.lnknum import compute_partial_link_DS
 import time
 
 if __name__ == '__main__':
@@ -15,7 +15,7 @@ if __name__ == '__main__':
 
     print("Starting mdt={0}, atol={1}...".format(mdt,atol))
     t0 = time.time()
-    filename = 'longT/strms2_N{0}_L{1}_mdt{2}_atol{3}.pickle'.format(N_sample,
+    filename = 'longT/strms_N{0}_L{1}_mdt{2}_atol{3}.pickle'.format(N_sample,
                                                         L_bounds,
                                                         mdt,
                                                         atol)
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     lnk = np.zeros((N_sample, N_sample, len(Ls)))
     nfs = np.zeros((N_sample, N_sample, len(Ls)))
 
-    save_filename = "longT/lnk_nums_N{0}_L{1}_mdt{2}_atol{3}".format(N_sample, L_bounds, mdt, atol)
+    save_filename = "lnknums_numba_N{0}_L{1}_mdt{2}_atol{3}".format(N_sample, L_bounds, mdt, atol)
     with open(save_filename, 'wb') as file:
         pickle.dump((lnk, nfs, Ls), file)
     count = 0
