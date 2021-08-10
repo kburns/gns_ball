@@ -112,7 +112,6 @@ def read_BCC(filename):
         len_curves = np.zeros(Ncurves, dtype=int)
         list_curves = []
         for i in range(Ncurves):
-            print(i)
             len_curves[i] = int.from_bytes(file.read(4), byteorder="little", signed=True)
             if len_curves[i] < 0: # if curve is closed
                 is_closed[i] = 1
@@ -122,6 +121,7 @@ def read_BCC(filename):
         chunk = file.read(1) 
         if chunk != b'':
             raise ValueError("Error loading")
+        print("Imported {0} curves".format(Ncurves))
         return list_curves, is_closed
     
 def readtxt_certificate(filename, sparse=False):
