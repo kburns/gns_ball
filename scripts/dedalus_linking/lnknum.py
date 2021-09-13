@@ -25,7 +25,7 @@ def compute_partial_link_DS(s1, s2, idx, filename, dL=1):
     dL: float or int
     """
     # partition s1 and s2 every dL
-    L_values = np.arange(0,s1.LL,dL)
+    L_values = np.arange(0,s1.L,dL)
     nL = len(L_values)
     def split_s(s):
         coord = s.s
