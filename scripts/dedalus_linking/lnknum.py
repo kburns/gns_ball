@@ -48,8 +48,8 @@ def compute_partial_link_DS(s1, s2, idx, filename, dL=1):
     for i in range(1,len(ls)):
         ls[i] = np.vstack((s1_start, ls[i]))
         ks[i] = np.vstack((s2_start, ks[i]))
-    # add s1.x[0:1] and s2.x[0:1] at the end of each subpolyline, except last
-    for i in range(len(ls)-1):
+    # add s1.x[0:1] and s2.x[0:1] at the end of each subpolyline, including last
+    for i in range(len(ls)):
         ls[i] = np.vstack((ls[i], s1_start))
         ks[i] = np.vstack((ks[i], s2_start))  
     
