@@ -25,7 +25,7 @@ def compute_partial_link_DS(s1, s2, idx, filename, dL=1):
     dL: float or int
     """
     # partition s1 and s2 every dL
-    L_values = np.arange(0,s1.L + dL,dL)
+    L_values = np.arange(0,s1.LL,dL)
     nL = len(L_values)
     def split_s(s):
         coord = s.s
@@ -33,6 +33,7 @@ def compute_partial_link_DS(s1, s2, idx, filename, dL=1):
         idx = [0]
         for k in range(1,nL):
             idx.append(np.max(np.where(coord <= L_values[k])) + 1)
+        idx.append(-1)
         # split polylne
         split_x = [s.x[idx[i]:idx[i + 1]] for i in range(len(idx) - 1)] 
         # get the normalization factor for the line going from 0 to L_values[k]
@@ -56,8 +57,8 @@ def compute_partial_link_DS(s1, s2, idx, filename, dL=1):
     # compute linking number between
     lnkNum = 0.
     norm_factor = 0.
-    for a in range(nL-1):
-        running_L = L_values[a]
+    for a in range(nL):
+        #running_L = L_values[a+1]
         for n in range(a**2, (a+1)**2): # this loop could be parallelized
             i,j = _pairing(n)
             lnkNum += _compute_link_DS(ls[i], ks[j])
@@ -68,8 +69,8 @@ def compute_partial_link_DS(s1, s2, idx, filename, dL=1):
         #                                                                   idx[1])
         with open(filename, "rb") as file:
             lnks, nfs, Ls = pickle.load(file)
-        lnks[idx[0],idx[1],a+1] = lnkNum
-        nfs[idx[0],idx[1],a+1] = norm_factor
+        lnks[idx[0], idx[1], a] = lnkNum
+        nfs[idx[0], idx[1], a] = norm_factor
         with open(filename, "wb") as file:
             pickle.dump((lnks, nfs, Ls), file)
         #with open(filename, "wb") as file:
