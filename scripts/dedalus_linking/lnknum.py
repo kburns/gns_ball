@@ -34,9 +34,9 @@ def compute_partial_link_DS(s1, s2, idx, filename, dL=1):
         for k in range(1,nL):
             idx.append(np.max(np.where(coord <= L_values[k])) + 1)
         # split polylne
-        split_x = [s.x[idx[i]:idx[i + 1]] for i in range(len(idx) - 1)] 
+        split_x = [s.x[idx[i]:idx[i + 1]+1] for i in range(len(idx) - 1)] 
         # get the normalization factor for the line going from 0 to L_values[k]
-        split_Tf = np.array([s.T[idx[i]:idx[i + 1]][-1] for i in range(len(idx) - 1)])
+        split_Tf = np.array([s.T[idx[i]:idx[i + 1]+1][-1] for i in range(len(idx) - 1)])
         return split_x, split_Tf
     
     ls, ls_Tf = split_s(s1)
