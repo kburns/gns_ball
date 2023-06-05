@@ -2,7 +2,7 @@
 
 This repo contains the code related to the paper:
 
-> "Vortex line entanglement in active Beltrami flows" <br />
+> "Vortex line entanglement in active Beltrami flows." <br />
 > Nicolas Romeo, Jonasz Slomka, Jorn Dunkel, and Keaton J. Burns. <br />
 > [[arxiv]](https://arxiv.org/abs/2306.01062)
 > [[github]](https://github.com/kburns/active_matter_ball)
