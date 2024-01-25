@@ -1,4 +1,4 @@
-# Active matter / GNS in the full ball
+# Generalized Navier-Stokes (GNS) simulations in the ball
 
 This repo contains the code related to the paper:
 
